@@ -29,7 +29,7 @@ public class Game extends JFrame{
 	
 	private int gravity,gravity2; //gravity1은 버섯 중력, gravity2는 독 중력
 	private int score,heart;
-	private boolean left,right,up,die=false;
+	private boolean left,right,die=false;
 	
 	public static void main(String[] args) {
 		new Game();
@@ -87,6 +87,22 @@ public class Game extends JFrame{
 			meet(); //뭔가 닿았을 때
 		}
 	}
+	public void first() { //게임을 시작할 때 초기화
+		score=0;
+		heart=3;
+		
+		gravity=8;
+		gravity2=7;
+		
+		marioX = (850-marioWidth)/2; //마리오 가운데
+		marioY = (850-marioHeight)-90;
+		
+		mariofoodX = (int)(Math.random()*(850-80)); //버섯 랜덤위치 
+		mariofoodY = 30; //위의 창 길이
+		
+		poisonX = (int)(Math.random()*850-80); //독 랜덤위치 
+		poisonY = 30; //위의 창 길이
+	}
 	public void keyInsert() {
 		addKeyListener(new KeyAdapter() { //키 입력받기
 			//키를 눌렀을 때 실행 할 메소드
@@ -120,42 +136,25 @@ public class Game extends JFrame{
 		mariofoodY += gravity; 
 		poisonY += gravity2;
 		
-		if(mariofoodY==830) { //버섯 못 먹고 떨어지는 경우
+		if(800 <= mariofoodY && mariofoodY <= 830) { //버섯 못 먹고 떨어지는 경우
 			mariofoodX = (int)(Math.random()*(850-marioWidth));
 			mariofoodY = 30;
 			score -= 100;
 		}
-		if(poisonY==800) { //독 안 먹은 경우
+		if(800 <= poisonY && poisonY <= 830) { //독 안 먹은 경우
 			poisonX = (int)(Math.random()*(850-marioWidth));
 			poisonY = 30;
 		}
 	}
-	public void first() { //게임을 시작할 때 초기화
-		score=0;
-		heart=3;
-		
-		gravity=8;
-		gravity2=7;
-		
-		marioX = (850-marioWidth)/2; //마리오 가운데
-		marioY = (850-marioHeight)-90;
-		
-		mariofoodX = (int)(Math.random()*(850-80)); //버섯 랜덤위치 
-		mariofoodY = 30; //위의 창 길이
-		
-		poisonX = (int)(Math.random()*850-80); //독 랜덤위치 
-		poisonY = 30; //위의 창 길이
-		
-	}
 	public void meet() { //버섯, 독 먹었을 때
 		if(marioX+marioWidth > mariofoodX && mariofoodX+80 > marioX && 
-				marioY + marioHeight > mariofoodY && mariofoodY + 80 > marioY) { //버섯 먹었을 때
+				marioY + marioHeight > mariofoodY && mariofoodY+80 > marioY) { //버섯 먹었을 때
 			 score += 200;
 			 mariofoodX = (int)(Math.random()*850-80); //버섯 다시 나오기	
 			 mariofoodY = 30;
 		}
 		if(marioX+marioWidth > poisonX && poisonX+80 > marioX && 
-				marioY + marioHeight > poisonY && poisonY + 80> marioY) { //독 먹었을 때
+				marioY + marioHeight > poisonY && poisonY+80> marioY) { //독 먹었을 때
 			score -= 100;
 			heart--;
 			if(heart==0) {
@@ -171,6 +170,5 @@ public class Game extends JFrame{
 		screenDraw(screenGraphics); //버퍼 이미지를 화면에 그려주는 작업
 		g.drawImage(bufferImage, 0, 0, null);
 	}
-	
 	
 }
