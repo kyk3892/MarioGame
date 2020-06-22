@@ -43,6 +43,36 @@ public class Game extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //창 닫을시 프로세스 종료
 		run();
 	}
+	
+	public void screenDraw(Graphics g) { //Graphics의 drawImage()메소드 사용해서 이미지 출력
+		g.drawImage(backgroundImg, 0, 0, null); //배경이미지
+		g.drawImage(mario, marioX, marioY, null); //용사 이미지
+		g.drawImage(mariofood, mariofoodX, mariofoodY, null); //돈 이미지
+		g.drawImage(poison,poisonX, poisonY, null); //독 이미지
+
+		//점수, 목숨 나오게
+		g.setColor(Color.red);
+		g.setFont(new Font("Arial", Font.BOLD, 40));
+		g.drawString("HEART : "+heart,30, 80);
+		g.setColor(Color.white);
+		g.setFont(new Font("Arial", Font.BOLD, 40)); //점수 글씨체, 폰트, 크기
+		g.drawString(score+" : SCORE", 570, 80); //drawString(출력문자, x좌표, y좌표) 설정
+		
+		if(die==true) { //죽었을때 중력 없애고 게임오버창
+			gravity=0;gravity2=0;
+			g.setColor(Color.black);
+			g.fillRect(30, 212, 790, 425);
+			g.setColor(Color.white);
+			g.setFont(new Font("Arial", Font.BOLD, 80));
+			g.drawString("----------------------------", 45, 255);
+			g.drawString("GAME OVER", 200, 400);
+			g.setFont(new Font("Arial", Font.BOLD, 40));
+			g.drawString("Your Score : "+score, 270, 500);
+			g.setFont(new Font("Arial", Font.BOLD, 80));
+			g.drawString("----------------------------", 45, 630);
+		}
+		this.repaint();
+	}
 	public void run() {
 		first(); //초기화 함수 실행
 		keyInsert(); //키 입력받기
@@ -135,7 +165,6 @@ public class Game extends JFrame{
 			poisonY = 30;
 		}
 	}
-	
 	public void paint(Graphics g) { //더블 버퍼링으로 깜빡임 해결하기
 		bufferImage = createImage(850,850);
 		screenGraphics = bufferImage.getGraphics();
@@ -143,33 +172,5 @@ public class Game extends JFrame{
 		g.drawImage(bufferImage, 0, 0, null);
 	}
 	
-	public void screenDraw(Graphics g) { //Graphics의 drawImage()메소드 사용해서 이미지 출력
-		g.drawImage(backgroundImg, 0, 0, null); //배경이미지
-		g.drawImage(mario, marioX, marioY, null); //용사 이미지
-		g.drawImage(mariofood, mariofoodX, mariofoodY, null); //돈 이미지
-		g.drawImage(poison,poisonX, poisonY, null); //독 이미지
-
-		//점수, 목숨 나오게
-		g.setColor(Color.red);
-		g.setFont(new Font("Arial", Font.BOLD, 40));
-		g.drawString("HEART : "+heart,30, 80);
-		g.setColor(Color.white);
-		g.setFont(new Font("Arial", Font.BOLD, 40)); //점수 글씨체, 폰트, 크기
-		g.drawString(score+" : SCORE", 570, 80); //drawString(출력문자, x좌표, y좌표) 설정
-		
-		if(die==true) { //죽었을때 중력 없애고 게임오버창
-			gravity=0;gravity2=0;
-			g.setColor(Color.black);
-			g.fillRect(30, 212, 790, 425);
-			g.setColor(Color.white);
-			g.setFont(new Font("Arial", Font.BOLD, 80));
-			g.drawString("----------------------------", 45, 255);
-			g.drawString("GAME OVER", 200, 400);
-			g.setFont(new Font("Arial", Font.BOLD, 40));
-			g.drawString("Your Score : "+score, 270, 500);
-			g.setFont(new Font("Arial", Font.BOLD, 80));
-			g.drawString("----------------------------", 45, 630);
-		}
-		this.repaint();
-	}
+	
 }
